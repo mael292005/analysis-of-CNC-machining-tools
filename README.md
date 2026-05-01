@@ -329,3 +329,5 @@ Suggested pipeline:
 ---
 
 *Documentation for the CNC tool wear prediction project — April 2026*
+
+![alt text](image.png)
