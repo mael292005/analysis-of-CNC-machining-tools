@@ -10,6 +10,9 @@ Usage :
     # Passe 1 + passe 150 + figure de comparaison côte à côte
     python plot_timeseries_phm.py --dataset_path ./dataset_4 --compare_idx 149
 
+    # Passe 1 + passe 150 + passe 300 (plots individuels + toutes les comparaisons)
+    python plot_timeseries_phm.py --dataset_path ./dataset_4 --also_pass_150 --also_pass_300
+
     # Choix libre
     python plot_timeseries_phm.py --dataset_path ./dataset_4 --pass_idx 0 --compare_idx 149 --tool c1
 """
@@ -108,7 +111,7 @@ def style_ax(ax):
     ax.grid(True, alpha=0.15, color='white', linewidth=0.5)
 
 
-# ── Plot individuel (style identique à l'original) ────────────────────────────
+# ── Plot individuel ───────────────────────────────────────────────────────────
 def plot_pass(dataset_path, tool, pass_idx):
     files = find_signal_files(dataset_path, tool)
     if not files:
@@ -211,14 +214,12 @@ def plot_comparison(dataset_path, tool, idx_a, idx_b):
             ax.fill_between(t_ms, y, alpha=0.08, color=color)
             style_ax(ax)
 
-            # Titre de colonne (1re ligne seulement)
             if row_idx == 0:
                 ax.set_title(
                     f'Passe {num} / {len(files)}{vb_label}',
                     color='white', fontsize=11, fontweight='bold', pad=8
                 )
 
-            # Label Y seulement à gauche
             if col_idx == 0:
                 ax.set_ylabel(CHANNEL_LABELS.get(ch, ch), color='white', fontsize=8.5)
             else:
@@ -255,30 +256,51 @@ def main():
                              'Genere aussi une figure cote a cote.')
     parser.add_argument('--also_pass_150', action='store_true',
                         help='Generer egalement la passe 150 (index 149, 0-based).')
+    # ── NOUVEAU : passe 300 ──────────────────────────────────────────────
+    parser.add_argument('--also_pass_300', action='store_true',
+                        help='Generer egalement la passe 300 (index 299, 0-based) : '
+                             'plot individuel + comparaison passe_principale vs 300. '
+                             'Si --also_pass_150 est aussi actif, genere en plus '
+                             'la comparaison passe 150 vs 300.')
     args = parser.parse_args()
 
     if not os.path.isdir(args.dataset_path):
         print(f"[ERROR] Dossier introuvable : {args.dataset_path}")
         return
 
-    # Toujours générer le plot individuel de la passe principale
+    # ── Plot individuel de la passe principale (toujours) ────────────────
     plot_pass(args.dataset_path, args.tool, args.pass_idx)
 
-    # Si l'option aussi pour la passe 150 est demandée et aucune passe de comparaison
-    # explicite n'est fournie, on définit compare_idx = 149.
+    # ── Résolution de compare_idx (--also_pass_150 sans compare explicite) ─
     if args.also_pass_150 and args.compare_idx is None:
         args.compare_idx = 149
 
-    # Si une deuxième passe est demandée
+    # ── Passe 150 (compare_idx ou --also_pass_150) ────────────────────────
     if args.compare_idx is not None:
         if args.compare_idx == args.pass_idx:
             print("[INFO] Les deux passes sont identiques, pas de comparaison.")
         else:
-            # Plot individuel de la passe 2 (même style)
             plot_pass(args.dataset_path, args.tool, args.compare_idx)
-            # Figure côte à côte
             plot_comparison(args.dataset_path, args.tool,
                             args.pass_idx, args.compare_idx)
+
+    # ── Passe 300 ─────────────────────────────────────────────────────────
+    if args.also_pass_300:
+        IDX_300 = 299  # index 0-based de la passe 300
+
+        # Plot individuel passe 300 (même style que 1 et 150)
+        plot_pass(args.dataset_path, args.tool, IDX_300)
+
+        # Comparaison : passe principale vs passe 300
+        if IDX_300 != args.pass_idx:
+            plot_comparison(args.dataset_path, args.tool,
+                            args.pass_idx, IDX_300)
+
+        # Comparaison : passe 150 vs passe 300 (si --also_pass_150 actif)
+        idx_150 = args.compare_idx if args.compare_idx is not None else 149
+        if args.also_pass_150 and idx_150 != IDX_300:
+            plot_comparison(args.dataset_path, args.tool,
+                            idx_150, IDX_300)
 
 
 if __name__ == '__main__':
