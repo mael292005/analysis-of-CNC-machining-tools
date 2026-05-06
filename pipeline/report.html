@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Benchmark CNC — phm2010_features.csv</title>
+<style>
+  body { font-family: 'Segoe UI', sans-serif; background:#0f1117; color:#e0e0e0; margin:0; padding:20px; }
+  h1   { color:#61dafb; border-bottom:2px solid #61dafb; padding-bottom:8px; }
+  h2   { color:#90caf9; margin-top:40px; }
+  h3   { color:#b0bec5; }
+  .meta-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:12px; margin:20px 0; }
+  .meta-card { background:#1e2130; border-radius:8px; padding:14px; border-left:4px solid #61dafb; }
+  .meta-card .label { color:#90caf9; font-size:0.8em; text-transform:uppercase; }
+  .meta-card .value { font-size:1.1em; font-weight:bold; margin-top:4px; }
+  table  { border-collapse:collapse; width:100%; margin-top:16px; }
+  th     { background:#1565C0; color:white; padding:10px 14px; text-align:left; }
+  td     { padding:9px 14px; border-bottom:1px solid #2a2d3e; }
+  tr.gold   td:first-child { background:#f57f17; color:black; font-weight:bold; border-radius:4px; }
+  tr.silver td:first-child { background:#546e7a; font-weight:bold; }
+  tr.bronze td:first-child { background:#6d4c41; font-weight:bold; }
+  tr:hover { background:#1e2130; }
+  .fig-card { background:#1e2130; border-radius:10px; padding:16px; margin:16px 0; }
+  .fig-card img { width:100%; border-radius:6px; }
+  .badge { display:inline-block; background:#1565C0; color:white; padding:3px 10px;
+            border-radius:12px; font-size:0.85em; margin:3px; }
+</style>
+</head>
+<body>
+<h1>📊 Benchmark CNC — Rapport de Prédiction d'Usure Outil</h1>
+
+<div class="meta-grid">
+  <div class="meta-card"><div class="label">Dataset</div><div class="value">phm2010_features.csv</div></div>
+  <div class="meta-card"><div class="label">Tâche</div><div class="value">CLASSIFICATION</div></div>
+  <div class="meta-card"><div class="label">Cible</div><div class="value">etat</div></div>
+  <div class="meta-card"><div class="label">Échantillons</div><div class="value">1890</div></div>
+  <div class="meta-card"><div class="label">Features</div><div class="value">92</div></div>
+  <div class="meta-card"><div class="label">CV</div><div class="value">5-Fold OOF</div></div>
+  <div class="meta-card"><div class="label">Généré le</div><div class="value">2026-05-06 09:38</div></div>
+</div>
+
+<h2>🏆 Classement des modèles</h2>
+<table>
+  <thead><tr><th>model</th><th>accuracy</th><th>balanced_accuracy</th><th>f1_macro</th><th>f1_weighted</th><th>fit_time_s</th></tr></thead>
+  <tbody><tr class="gold"><td>🥇Bagging</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>3.8100</td></tr>
+<tr class="silver"><td>🥈GradientBoosting</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>21.0800</td></tr>
+<tr class="bronze"><td>🥉DecisionTree</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>1.0000</td><td>0.0800</td></tr>
+<tr class=""><td>SVM</td><td>0.9958</td><td>0.7222</td><td>0.6976</td><td>0.9951</td><td>0.2300</td></tr>
+<tr class=""><td>LogisticRegression</td><td>0.9958</td><td>0.7444</td><td>0.6910</td><td>0.9952</td><td>0.2700</td></tr>
+<tr class=""><td>KNN</td><td>0.9947</td><td>0.6111</td><td>0.5908</td><td>0.9937</td><td>0.1300</td></tr>
+<tr class=""><td>HistGradientBoosting</td><td>0.9931</td><td>0.5109</td><td>0.5212</td><td>0.9907</td><td>5.0000</td></tr>
+<tr class=""><td>MLP</td><td>0.9921</td><td>0.4667</td><td>0.4433</td><td>0.9883</td><td>0.7500</td></tr>
+<tr class=""><td>ExtraTrees</td><td>0.9915</td><td>0.3889</td><td>0.4097</td><td>0.9878</td><td>1.1900</td></tr>
+<tr class=""><td>RandomForest</td><td>0.9905</td><td>0.3333</td><td>0.3317</td><td>0.9857</td><td>1.4300</td></tr>
+</tbody>
+</table>
+
+<h2>📈 Graphes</h2>
+
+            <div class="fig-card">
+                <h3>Fig1 Scores</h3>
+                <img src="fig1_scores.png" alt="fig1_scores.png">
+            </div>
+            <div class="fig-card">
+                <h3>Fig2 Score Vs Time</h3>
+                <img src="fig2_score_vs_time.png" alt="fig2_score_vs_time.png">
+            </div>
+            <div class="fig-card">
+                <h3>Fig3 Pred Vs Actual</h3>
+                <img src="fig3_pred_vs_actual.png" alt="fig3_pred_vs_actual.png">
+            </div>
+            <div class="fig-card">
+                <h3>Fig4 Radar</h3>
+                <img src="fig4_radar.png" alt="fig4_radar.png">
+            </div>
+            <div class="fig-card">
+                <h3>Fig5 Confusion Residuals</h3>
+                <img src="fig5_confusion_residuals.png" alt="fig5_confusion_residuals.png">
+            </div>
+            <div class="fig-card">
+                <h3>Fig6 Error Dist</h3>
+                <img src="fig6_error_dist.png" alt="fig6_error_dist.png">
+            </div>
+
+</body></html>
